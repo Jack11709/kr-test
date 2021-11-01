@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { CarouselProvider } from './hooks/useCarousel'
+import GlobalCss from './styles/global'
+import ProductDetails from './components/ProductDetails'
+import Products from './components/Products'
+
+const queryClient = new QueryClient()
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <QueryClientProvider client={queryClient}>
+      <GlobalCss />
+      <CarouselProvider>
+        <Router>
+          <Switch>
+            <Route path="/products/:productId">
+              <ProductDetails />
+            </Route>
+            <Route path="/">
+              <Products />
+            </Route>
+          </Switch>
+        </Router>
+      </CarouselProvider>
+    </QueryClientProvider>
+  )
 }
 
-export default App;
+export default App
